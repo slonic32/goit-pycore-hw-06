@@ -25,12 +25,13 @@ class Phone(Field):
     """Клас для зберігання номера телефону з валідацією формату."""
 
     def __init__(self, value: str):
-        if self.isValid(value):
+        if Phone.isValid(value):
             super().__init__(value)
         else:
             raise ValueError("Phone number must contain 10 digits")
 
-    def isValid(self, phone) -> bool:
+    @staticmethod
+    def isValid(phone) -> bool:
         """Валідація телефону - 10 цифр"""
         if re.fullmatch(r"\d{10}", phone):
             return True
@@ -43,7 +44,10 @@ class Phone(Field):
 
     def edit(self, new_value: str) -> None:
         """edit phone"""
-        self.value = new_value.strip()
+        if Phone.isValid(new_value):
+            self.value = new_value.strip()
+        else:
+            raise ValueError("Phone number must contain 10 digits")
 
 
 class Record:
